@@ -1,0 +1,870 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>אפליקציית לימוד – פוטוסינתזה, אבות המזון ונשימה תאית</title>
+  <style>
+    :root{
+      --bg:#0b1020;
+      --card:#121a33;
+      --card2:#0f1630;
+      --text:#e9ecff;
+      --muted:#b6bce6;
+      --line:rgba(255,255,255,.10);
+      --accent:#7dd3fc;
+      --accent2:#a78bfa;
+      --ok:#86efac;
+      --no:#fca5a5;
+      --warn:#fde68a;
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --radius: 18px;
+      --radius2: 14px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --sans: system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji","Segoe UI Emoji";
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:var(--sans);
+      background: radial-gradient(1200px 800px at 20% -10%, rgba(167,139,250,.18), transparent 60%),
+                  radial-gradient(900px 600px at 90% 0%, rgba(125,211,252,.18), transparent 60%),
+                  var(--bg);
+      color:var(--text);
+      line-height:1.55;
+    }
+    a{color:var(--accent)}
+    .wrap{max-width:1100px;margin:0 auto;padding:20px}
+    header{
+      display:flex; gap:14px; align-items:flex-start; justify-content:space-between;
+      padding:18px; border:1px solid var(--line); border-radius:var(--radius);
+      background: linear-gradient(180deg, rgba(18,26,51,.92), rgba(18,26,51,.65));
+      box-shadow:var(--shadow);
+    }
+    .title h1{margin:0;font-size:22px}
+    .title p{margin:6px 0 0;color:var(--muted);max-width:780px}
+    .tabs{
+      display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end;
+    }
+    .tabbtn{
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.04);
+      color:var(--text);
+      padding:10px 12px; border-radius:999px;
+      cursor:pointer;
+      transition:.15s transform, .15s background;
+      font-weight:700;
+    }
+    .tabbtn:hover{transform:translateY(-1px); background:rgba(255,255,255,.07)}
+    .tabbtn.active{background:rgba(125,211,252,.14); border-color:rgba(125,211,252,.35)}
+    .grid{display:grid; grid-template-columns: 1.05fr .95fr; gap:16px; margin-top:16px}
+    @media (max-width: 900px){ .grid{grid-template-columns:1fr} header{flex-direction:column} .tabs{justify-content:flex-start}}
+    .card{
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      background: rgba(18,26,51,.70);
+      box-shadow:var(--shadow);
+      overflow:hidden;
+    }
+    .card .hd{
+      padding:14px 16px;
+      display:flex; align-items:center; justify-content:space-between; gap:12px;
+      border-bottom:1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,0));
+    }
+    .card .hd h2{margin:0; font-size:16px}
+    .card .bd{padding:16px}
+    .pill{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:7px 10px; border-radius:999px;
+      background:rgba(167,139,250,.12); border:1px solid rgba(167,139,250,.22);
+      color:var(--text); font-weight:700; font-size:12px;
+      white-space:nowrap;
+    }
+    .pill.blue{background:rgba(125,211,252,.12); border-color:rgba(125,211,252,.22)}
+    .pill.ok{background:rgba(134,239,172,.12); border-color:rgba(134,239,172,.22)}
+    .pill.no{background:rgba(252,165,165,.12); border-color:rgba(252,165,165,.22)}
+    .pill.warn{background:rgba(253,230,138,.12); border-color:rgba(253,230,138,.22)}
+    .kbd{font-family:var(--mono); font-size:12px; color:var(--muted)}
+    .hr{height:1px; background:var(--line); margin:14px 0}
+    details{
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.03);
+      border-radius:var(--radius2);
+      padding:10px 12px;
+      margin:10px 0;
+    }
+    summary{cursor:pointer; font-weight:800}
+    summary::marker{color:var(--accent)}
+    .callout{
+      border:1px dashed rgba(125,211,252,.35);
+      background:rgba(125,211,252,.08);
+      border-radius:var(--radius2);
+      padding:12px;
+      margin:12px 0;
+    }
+    .eq{
+      font-family:var(--mono);
+      background:rgba(0,0,0,.25);
+      border:1px solid var(--line);
+      border-radius:12px;
+      padding:10px;
+      overflow:auto;
+    }
+    .mini{
+      display:grid; grid-template-columns:1fr 1fr; gap:10px;
+    }
+    @media(max-width:650px){ .mini{grid-template-columns:1fr} }
+    ul{margin:8px 0 0 0; padding-right:18px}
+    li{margin:6px 0}
+    .btn{
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.04);
+      color:var(--text);
+      padding:10px 12px;
+      border-radius:12px;
+      cursor:pointer;
+      transition:.15s transform, .15s background;
+      font-weight:800;
+    }
+    .btn:hover{transform:translateY(-1px); background:rgba(255,255,255,.07)}
+    .btn.primary{background:rgba(167,139,250,.16); border-color:rgba(167,139,250,.35)}
+    .btn.primary:hover{background:rgba(167,139,250,.22)}
+    .btn.small{padding:8px 10px; border-radius:10px; font-weight:800}
+    .btn.ok{background:rgba(134,239,172,.14); border-color:rgba(134,239,172,.30)}
+    .btn.no{background:rgba(252,165,165,.14); border-color:rgba(252,165,165,.30)}
+    .row{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
+    .select, .input{
+      border:1px solid var(--line);
+      background:rgba(0,0,0,.22);
+      color:var(--text);
+      padding:10px 12px;
+      border-radius:12px;
+      outline:none;
+      min-width: 180px;
+    }
+    .input{min-width:240px; flex:1}
+    .muted{color:var(--muted)}
+    .qcard{
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.03);
+      border-radius:var(--radius2);
+      padding:12px;
+      margin:12px 0;
+    }
+    .qtop{display:flex; justify-content:space-between; gap:10px; align-items:flex-start}
+    .qtitle{margin:0; font-size:15px}
+    .tag{
+      font-size:12px;
+      padding:6px 9px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:rgba(0,0,0,.18);
+      color:var(--muted);
+      white-space:nowrap;
+    }
+    .answer{
+      display:none;
+      margin-top:10px;
+      border-top:1px solid var(--line);
+      padding-top:10px;
+    }
+    .choices{margin-top:10px}
+    .choice{
+      display:block;
+      padding:10px 10px;
+      border:1px solid var(--line);
+      border-radius:12px;
+      background:rgba(0,0,0,.18);
+      margin:8px 0;
+      cursor:pointer;
+      user-select:none;
+    }
+    .choice:hover{background:rgba(255,255,255,.05)}
+    .choice.correct{border-color:rgba(134,239,172,.45); background:rgba(134,239,172,.10)}
+    .choice.wrong{border-color:rgba(252,165,165,.45); background:rgba(252,165,165,.10)}
+    .foot{
+      margin-top:16px;
+      color:var(--muted);
+      font-size:12px;
+      opacity:.9;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="title">
+        <h1>אפליקציית לימוד במדעים</h1>
+        <p>
+          פוטוסינתזה, ביוכימיה/אבות המזון, נשימה תאית + דף רמאות (Cheat Sheet).
+          בחרי “לימוד” כדי לקרוא את החומר, או “תרגול” כדי להתאמן בסטים של 10 שאלות.
+        </p>
+      </div>
+      <div class="tabs">
+        <button class="tabbtn active" id="tabLearn">לימוד</button>
+        <button class="tabbtn" id="tabQuiz">תרגול</button>
+      </div>
+    </header>
+
+    <div class="grid" id="viewLearn">
+      <section class="card">
+        <div class="hd">
+          <h2>חלק א׳: פוטוסינתזה – “מפעל המזון של הטבע”</h2>
+          <span class="pill blue">מה חשוב לזכור למבחן</span>
+        </div>
+        <div class="bd">
+
+          <div class="callout">
+            <strong>רעיון מרכזי:</strong> הצמחים הם <strong>יצרנים (אוטוטרופים)</strong> –
+            מייצרים חומר אורגני (מזון) מחומרים אי-אורגניים.
+          </div>
+
+          <details open>
+            <summary>1) “המתכון” לפוטוסינתזה (נוסחה כימית)</summary>
+            <div class="hr"></div>
+            <div class="mini">
+              <div>
+                <div class="pill">החומרים הנכנסים (מגיבים)</div>
+                <ul>
+                  <li><strong>פחמן דו-חמצני (CO₂)</strong> מהאוויר</li>
+                  <li><strong>מים (H₂O)</strong> מהשורשים</li>
+                </ul>
+              </div>
+              <div>
+                <div class="pill">האנרגיה</div>
+                <ul>
+                  <li><strong>אור השמש</strong> (נקלט ע״י הכלורופיל הירוק בעלים)</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="hr"></div>
+            <div class="pill ok">התוצרים (מה יוצא)</div>
+            <ul>
+              <li><strong>גלוקוז</strong> (סוכר/מזון)</li>
+              <li><strong>חמצן (O₂)</strong> שנפלט לאוויר</li>
+            </ul>
+
+            <div class="hr"></div>
+            <div class="eq" aria-label="נוסחת פוטוסינתזה">
+CO2 + H2O  --(אור + כלורופיל)-->  גלוקוז + O2
+            </div>
+          </details>
+
+          <details>
+            <summary>2) איפה זה קורה?</summary>
+            <div class="hr"></div>
+            <p>
+              בעיקר <strong>בעלים</strong>, בתוך אברונים ירוקים בתאים שנקראים
+              <strong>כלורופלסטים</strong>, שמכילים את הפיגמנט <strong>כלורופיל</strong>.
+            </p>
+          </details>
+
+          <details>
+            <summary>3) גורמים משפיעים (“גורמים מגבילים”) – גרפים במבחן</summary>
+            <div class="hr"></div>
+            <p class="muted">
+              אם חסר אחד מהם – התהליך “נתקע”.
+            </p>
+            <ul>
+              <li><strong>עוצמת אור:</strong> יותר אור ⇒ הקצב עולה, עד גבול ואז מתייצב.</li>
+              <li><strong>ריכוז CO₂:</strong> יותר CO₂ ⇒ הקצב עולה, עד שמתייצב.</li>
+              <li><strong>טמפרטורה:</strong> עולה עד נקודה, ואז בחום גבוה מדי יש <strong>הרס חלבונים</strong> והקצב צונח/מופסק.</li>
+              <li><strong>מים:</strong> חוסר במים סוגר <strong>פיוניות</strong> ⇒ אין כניסת CO₂ ⇒ התהליך נעצר.</li>
+            </ul>
+            <div class="callout">
+              <strong>תבנית גרף קלאסית:</strong> “עולה ואז נתקע” (מתיישר).
+            </div>
+          </details>
+
+          <details>
+            <summary>4) ניסויים מפורסמים שכדאי להכיר</summary>
+            <div class="hr"></div>
+            <ul>
+              <li><strong>ניסוי פריסטלי:</strong> עכבר מת מחנק מתחת לפעמון זכוכית. עם צמח לידו – העכבר חי (כי הצמח מייצר חמצן).</li>
+              <li><strong>בועות במים:</strong> צמח מים (אלודיאה) באור משחרר בועות גז – <strong>חמצן</strong>.</li>
+              <li><strong>בדיקת עמילן:</strong> מכסים חלק מהעלה בנייר כסף (בלי אור), בודקים עם <strong>יוד</strong> – החלק בחושך <strong>לא יכיל עמילן</strong>.</li>
+            </ul>
+          </details>
+
+        </div>
+      </section>
+
+      <aside class="card">
+        <div class="hd">
+          <h2>תצוגת “העיקר לזכור”</h2>
+          <span class="pill warn">לפני מבחן</span>
+        </div>
+        <div class="bd">
+          <details open>
+            <summary>ארבעת המגבילים</summary>
+            <div class="hr"></div>
+            <p><strong>אור, מים, CO₂, טמפרטורה</strong> — בגרף בדרך כלל “עולה ואז נתקע”.</p>
+          </details>
+          <details>
+            <summary>פיוניות</summary>
+            <div class="hr"></div>
+            <p>חוסר מים ⇒ פיוניות נסגרות ⇒ אין כניסת CO₂ ⇒ פוטוסינתזה נעצרת.</p>
+          </details>
+          <details>
+            <summary>טמפרטורה גבוהה</summary>
+            <div class="hr"></div>
+            <p>בחום גבוה מדי יש <strong>דנטורציה</strong> / הרס חלבונים בצמח ⇒ הקצב צונח.</p>
+          </details>
+          <div class="foot">הטיפ: לקרוא פעם אחת “כמו סיפור”, ואז לתרגל 10 שאלות.</div>
+        </div>
+      </aside>
+
+      <section class="card">
+        <div class="hd">
+          <h2>חלק ב׳: ביוכימיה ואבות המזון</h2>
+          <span class="pill blue">פחמימות • שומנים • חלבונים • מינרלים</span>
+        </div>
+        <div class="bd">
+
+          <details open>
+            <summary>1) פחמימות (סוכרים) – מקור האנרגיה הראשי</summary>
+            <div class="hr"></div>
+            <p>מורכבות מ-<strong>C, H, O</strong>. יש 3 סוגים:</p>
+            <ul>
+              <li><strong>חד-סוכר</strong> (למשל גלוקוז): מתוק, נספג מהר, אנרגיה זמינה. מולקולה קטנה שעוברת דרך קרומים.</li>
+              <li><strong>דו-סוכר</strong> (למשל סוכר לבן): שני חד-סוכרים מחוברים.</li>
+              <li><strong>רב-סוכר</strong> (עמילן, תאית/סיבים): שרשראות ענקיות, לא מתוקים, לא מסיסים; מאגר אנרגיה (עמילן בצמח) או לבנייה (דופן התא).</li>
+            </ul>
+            <div class="callout">
+              <strong>זיהוי במעבדה:</strong><br/>
+              גלוקוז: <strong>בנדיקט + חימום</strong> מכחול לכתום/אדום.<br/>
+              עמילן: <strong>יוד</strong> מצהוב/חום לסגול-שחור כהה.
+            </div>
+          </details>
+
+          <details>
+            <summary>2) שומנים – מחסן האנרגיה והגנה</summary>
+            <div class="hr"></div>
+            <p><strong>טריגליצרידים</strong> = גליצרול + 3 חומצות שומן.</p>
+            <ul>
+              <li>תפקידים: בידוד מקור, הגנה על איברים פנימיים, בניית קרום התא, ומאגר אנרגיה ארוך טווח.</li>
+              <li><strong>הידרופוביים</strong> (לא מתערבבים במים).</li>
+              <li>זיהוי במעבדה: <strong>כתם שקוף על נייר שלא מתייבש</strong>.</li>
+            </ul>
+          </details>
+
+          <details>
+            <summary>3) חלבונים – הבונים והפועלים</summary>
+            <div class="hr"></div>
+            <p>בנויים משרשרת של <strong>חומצות אמיניות</strong> (20 סוגים).</p>
+            <ul>
+              <li><strong>מבנה מרחבי:</strong> השרשרת מתקפלת לצורה ספציפית — <strong>הצורה קובעת תפקיד</strong>.</li>
+              <li><strong>דנטורציה:</strong> חימום גבוה או שינוי pH הורסים את המבנה ⇒ החלבון מפסיק לתפקד (כמו חלבון ביצה).</li>
+              <li>זיהוי במעבדה: <strong>ביורט</strong> מכחול לסגול.</li>
+            </ul>
+          </details>
+
+          <details>
+            <summary>4) מינרלים (אי-אורגניים) שהצמח קולט מהאדמה</summary>
+            <div class="hr"></div>
+            <ul>
+              <li><strong>N (חנקן):</strong> לבניית חלבונים</li>
+              <li><strong>P (זרחן):</strong> לבניית DNA</li>
+              <li><strong>K, ברזל, מגנזיום:</strong> חשובים לתהליכים (מגנזיום = חלק מהכלורופיל)</li>
+            </ul>
+          </details>
+
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="hd">
+          <h2>חלק ג׳: נשימה תאית ואנרגיה</h2>
+          <span class="pill blue">ההפך מפוטוסינתזה</span>
+        </div>
+        <div class="bd">
+
+          <div class="callout">
+            <strong>חשוב:</strong> נשימה תאית ≠ נשימה ריאתית.  
+            נשימה תאית היא תהליך כימי שקורה בתוך <strong>כל תא חי</strong> (גם בצמחים וגם בבני אדם).
+          </div>
+
+          <details open>
+            <summary>התהליך (מטרה, נכנס/יוצא)</summary>
+            <div class="hr"></div>
+            <p><strong>מטרה:</strong> להפיק אנרגיה לפעולות החיים.</p>
+            <ul>
+              <li><strong>נכנס:</strong> גלוקוז + חמצן</li>
+              <li><strong>יוצא:</strong> פחמן דו-חמצני + מים + אנרגיה כימית (<strong>ATP</strong>) + אנרגיית חום</li>
+            </ul>
+            <div class="eq" aria-label="נוסחת נשימה תאית">
+גלוקוז + O2  -->  CO2 + H2O + ATP + חום
+            </div>
+          </details>
+
+          <details>
+            <summary>דגש של “יום ולילה”</summary>
+            <div class="hr"></div>
+            <ul>
+              <li>צמחים עושים <strong>פוטוסינתזה רק באור</strong>.</li>
+              <li>אבל עושים <strong>נשימה תאית כל הזמן</strong> (יום ולילה).</li>
+              <li>בלילה: צמחים <strong>קולטים חמצן</strong> ו<strong>פולטים CO₂</strong> – כמו בני אדם.</li>
+            </ul>
+          </details>
+
+        </div>
+      </section>
+
+      <aside class="card">
+        <div class="hd">
+          <h2>Cheat Sheet</h2>
+          <span class="pill warn">צבעים + הבחנות</span>
+        </div>
+        <div class="bd">
+          <details open>
+            <summary>אינדיקטורים (צבעים)</summary>
+            <div class="hr"></div>
+            <ul>
+              <li><strong>עמילן</strong> ← <strong>יוד</strong> (שחור/סגול-שחור)</li>
+              <li><strong>סוכר (גלוקוז)</strong> ← <strong>בנדיקט + חימום</strong> (כתום)</li>
+              <li><strong>חלבון</strong> ← <strong>ביורט</strong> (סגול)</li>
+            </ul>
+          </details>
+
+          <details>
+            <summary>ההבדל הגדול</summary>
+            <div class="hr"></div>
+            <ul>
+              <li><strong>פוטוסינתזה:</strong> בונה סוכר, צורכת אנרגיית אור (בצמחים, באור).</li>
+              <li><strong>נשימה תאית:</strong> מפרקת סוכר, משחררת אנרגיה (בכולם, תמיד).</li>
+            </ul>
+          </details>
+
+          <details>
+            <summary>חלבונים = מבנה</summary>
+            <div class="hr"></div>
+            <p>
+              אם שואלים למה אנזים/חלבון הפסיק לעבוד בחום גבוה –
+              התשובה: <strong>דנטורציה</strong> (שינוי/הרס המבנה המרחבי).
+            </p>
+          </details>
+
+          <div class="hr"></div>
+          <div class="row">
+            <button class="btn small" id="resetProgress">איפוס סימונים בתרגול</button>
+            <span class="kbd">הסימונים נשמרים במכשיר</span>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <div class="grid" id="viewQuiz" style="display:none">
+      <section class="card">
+        <div class="hd">
+          <h2>תרגול – סטים של 10 שאלות</h2>
+          <span class="pill blue" id="progressPill">התקדמות: 0/0</span>
+        </div>
+        <div class="bd">
+
+          <div class="row">
+            <select class="select" id="topicFilter">
+              <option value="all">כל הנושאים</option>
+              <option value="A">חלק א׳ – פוטוסינתזה</option>
+              <option value="B">חלק ב׳ – אבות המזון</option>
+              <option value="C">חלק ג׳ – נשימה תאית</option>
+              <option value="CS">Cheat Sheet</option>
+            </select>
+
+            <select class="select" id="modeFilter">
+              <option value="mix">מעורב (פתוחות + אמריקאיות)</option>
+              <option value="open">רק פתוחות</option>
+              <option value="mcq">רק אמריקאיות</option>
+            </select>
+
+            <input class="input" id="searchBox" placeholder="חיפוש בשאלה (למשל: יוד, פיוניות, ATP)..." />
+          </div>
+
+          <div class="hr"></div>
+
+          <div class="row">
+            <button class="btn primary" id="newSetBtn">צור סט חדש (10)</button>
+            <button class="btn" id="shuffleBtn">ערבוב מחדש</button>
+          </div>
+
+          <div class="foot">
+            טיפ: אחרי “הצג תשובה” סמני <strong>ידעתי</strong> או <strong>לא ידעתי</strong>. זה עוזר למעקב.
+          </div>
+
+          <div id="questions"></div>
+
+        </div>
+      </section>
+
+      <aside class="card">
+        <div class="hd">
+          <h2>לוח מצב</h2>
+          <span class="pill" id="setInfo">סט: —</span>
+        </div>
+        <div class="bd">
+          <div class="row">
+            <span class="pill ok" id="knownCount">ידעתי: 0</span>
+            <span class="pill no" id="unknownCount">לא ידעתי: 0</span>
+          </div>
+
+          <div class="hr"></div>
+
+          <details open>
+            <summary>איך זה עובד?</summary>
+            <div class="hr"></div>
+            <ul>
+              <li>בחרי נושא/סוג שאלות, ואז “צור סט חדש (10)”.</li>
+              <li>בשאלות אמריקאיות: לחצי על תשובה כדי לבדוק.</li>
+              <li>בשאלות פתוחות: “הצג תשובה”.</li>
+              <li>סמני ידעתי/לא ידעתי – נשמר בדפדפן.</li>
+            </ul>
+          </details>
+
+          <details>
+            <summary>איפוס תרגול</summary>
+            <div class="hr"></div>
+            <p class="muted">אם רוצים להתחיל מחדש, אפשר לאפס את כל הסימונים.</p>
+            <button class="btn" id="resetProgress2">איפוס סימונים</button>
+          </details>
+        </div>
+      </aside>
+    </div>
+
+  </div>
+
+<script>
+  // ---------- Data ----------
+  const QUESTION_BANK = [
+    // A - Photosynthesis
+    {id:"A1", topic:"A", type:"open", q:"כתבי את “המתכון” לפוטוסינתזה: מה נכנס, מה יוצא ומה מקור האנרגיה?", a:"נכנס: CO₂ מהאוויר + H₂O מהשורשים. אנרגיה: אור השמש (נקלט ע\"י כלורופיל). יוצא: גלוקוז (סוכר) + O₂ שנפלט לאוויר."},
+    {id:"A2", topic:"A", type:"mcq", q:"איפה מתרחשת פוטוסינתזה בעיקר?", choices:["בגרעין התא","במיטוכונדריה","בכלורופלסטים בעלים","בדם"], correct:2, explain:"פוטוסינתזה מתרחשת בעלים בתוך כלורופלסטים שמכילים כלורופיל."},
+    {id:"A3", topic:"A", type:"open", q:"מהו כלורופיל ולמה הוא חשוב?", a:"כלורופיל הוא פיגמנט ירוק בכלורופלסטים שקולט את אור השמש ומאפשר את התהליך."},
+    {id:"A4", topic:"A", type:"mcq", q:"מה נכון לגבי עוצמת אור וקצב פוטוסינתזה?", choices:["ככל שיש יותר אור הקצב תמיד עולה בלי סוף","ככל שיש פחות אור הקצב עולה","הקצב עולה עם האור עד גבול ואז מתייצב","אין קשר בין אור לפוטוסינתזה"], correct:2, explain:"זה גורם מגביל: עולה עד רוויה ואז מתיישר."},
+    {id:"A5", topic:"A", type:"mcq", q:"אם אין מספיק מים, מה יקרה שיגרום לעצירת הפוטוסינתזה?", choices:["הכלורופלסטים נעלמים","הפיוניות ייסגרו ולא ייכנס CO₂","הצמח יתחיל לייצר יותר גלוקוז","החמצן ייכנס לעלה ויעצור הכל"], correct:1, explain:"חוסר מים גורם לסגירת פיוניות, ואז אין כניסת CO₂."},
+    {id:"A6", topic:"A", type:"open", q:"מהו “גורם מגביל” בהקשר של פוטוסינתזה?", a:"גורם שמגביל את קצב הפוטוסינתזה; אם חסר אחד מהגורמים (אור/מים/CO₂/טמפרטורה) התהליך נתקע."},
+    {id:"A7", topic:"A", type:"mcq", q:"מה קורה בטמפרטורה גבוהה מדי?", choices:["הקצב ממשיך לעלות","אין שינוי","החלבונים נהרסים והתהליך צונח/מופסק","יותר CO₂ נכנס ולכן הקצב עולה"], correct:2, explain:"בחום גבוה מדי יש הרס חלבונים והקצב יורד מאוד."},
+    {id:"A8", topic:"A", type:"open", q:"תארי בקצרה את ניסוי פריסטלי ומה הוא מוכיח.", a:"עכבר מת מחנק מתחת לפעמון זכוכית; אם שמים צמח לידו העכבר חי כי הצמח מייצר חמצן בפוטוסינתזה."},
+    {id:"A9", topic:"A", type:"open", q:"בצמח מים (אלודיאה) שרואים בועות באור – מהן הבועות ומה זה אומר?", a:"הבועות הן חמצן (O₂). זה מראה שמתרחשת פוטוסינתזה באור."},
+    {id:"A10", topic:"A", type:"open", q:"בניסוי בדיקת עמילן: למה החלק של העלה שהיה מכוסה לא יכיל עמילן?", a:"כי ללא אור לא התרחשה פוטוסינתזה ולכן לא נוצר גלוקוז שנאגר כעמילן."},
+    {id:"A11", topic:"A", type:"mcq", q:"מהם המגיבים בפוטוסינתזה?", choices:["גלוקוז וחמצן","CO₂ ומים","CO₂ ו-ATP","מים וחלבון"], correct:1, explain:"פוטוסינתזה משתמשת ב-CO₂ ומים."},
+    {id:"A12", topic:"A", type:"mcq", q:"מהם התוצרים בפוטוסינתזה?", choices:["CO₂ ומים","גלוקוז וחמצן","ATP וחום","חלבונים ושומנים"], correct:1, explain:"התוצרים הם גלוקוז + O₂."},
+
+    // B - Biochemistry / nutrients
+    {id:"B1", topic:"B", type:"open", q:"ממה מורכבות פחמימות (אילו יסודות)?", a:"פחמימות מורכבות מפחמן (C), מימן (H) וחמצן (O)."},
+    {id:"B2", topic:"B", type:"mcq", q:"איזה סוג פחמימה הוא שרשראות ענקיות, לא מתוק ולא מסיס במים?", choices:["חד-סוכר","דו-סוכר","רב-סוכר","מינרל"], correct:2, explain:"רב-סוכר (כמו עמילן, תאית/סיבים) הוא שרשרת ענקית."},
+    {id:"B3", topic:"B", type:"open", q:"מה ההבדל הכללי בין חד-סוכר לרב-סוכר לפי החומר?", a:"חד-סוכר: מתוק, נספג מהר, מולקולה קטנה. רב-סוכר: שרשראות ענקיות, לא מתוק, לא מסיס; מאגר אנרגיה או חומר בנייה."},
+    {id:"B4", topic:"B", type:"mcq", q:"איזה אינדיקטור מזהה גלוקוז (בחימום) ומשנה צבע מכחול לכתום/אדום?", choices:["יוד","ביורט","בנדיקט","כלורופיל"], correct:2, explain:"בנדיקט בחימום מזהה גלוקוז ומשנה צבע."},
+    {id:"B5", topic:"B", type:"mcq", q:"איזה אינדיקטור מזהה עמילן ומשנה צבע לצבע כהה (סגול-שחור)?", choices:["בנדיקט","יוד","ביורט","מים"], correct:1, explain:"יוד משנה צבע לצהוב/חום -> סגול-שחור בנוכחות עמילן."},
+    {id:"B6", topic:"B", type:"open", q:"מה המבנה הבסיסי של שומן מסוג טריגליצריד?", a:"גליצרול המחובר ל-3 חומצות שומן."},
+    {id:"B7", topic:"B", type:"mcq", q:"איזו תכונה מאפיינת שומנים לפי החומר?", choices:["מסיסים מאוד במים","הידרופוביים (לא מתערבבים במים)","בנויים מ-20 חומצות אמיניות","נספגים מהר בדם כמו חד-סוכר"], correct:1, explain:"שומנים הם הידרופוביים."},
+    {id:"B8", topic:"B", type:"open", q:"צייני לפחות 2 תפקידים של שומנים מהחומר.", a:"בידוד מקור, הגנה על איברים פנימיים, בניית קרום התא, ומאגר אנרגיה ארוך טווח."},
+    {id:"B9", topic:"B", type:"mcq", q:"איך מזהים שומן במעבדה לפי החומר?", choices:["יוד נהיה שחור","בנדיקט נהיה כתום","כתם שקוף על נייר שלא מתייבש","ביורט נהיה ירוק"], correct:2, explain:"שומן משאיר כתם שקוף שלא מתייבש על נייר."},
+    {id:"B10", topic:"B", type:"open", q:"ממה בנוי חלבון?", a:"משרשרת של חומצות אמיניות (20 סוגים בטבע)."},
+    {id:"B11", topic:"B", type:"mcq", q:"למה “הצורה קובעת את התפקיד” בחלבונים?", choices:["כי צבע החלבון קובע את תפקידו","כי החלבון מתקפל למבנה מרחבי ספציפי שמשפיע על תפקוד","כי חלבון תמיד מסיס במים","כי חלבון מורכב מגליצרול"], correct:1, explain:"המבנה המרחבי שנוצר מהקיפול הוא זה שמאפשר את הפעולה."},
+    {id:"B12", topic:"B", type:"open", q:"מהי דנטורציה ומה גורם לה לפי החומר?", a:"דנטורציה = הרס המבנה המרחבי של החלבון; נגרמת מחימום גבוה או שינוי חומציות (pH), ואז החלבון מפסיק לתפקד."},
+    {id:"B13", topic:"B", type:"mcq", q:"איזה אינדיקטור מזהה חלבונים ומשנה מכחול לסגול?", choices:["בנדיקט","יוד","ביורט","CO₂"], correct:2, explain:"ביורט מזהה חלבון והופך לסגול."},
+    {id:"B14", topic:"B", type:"open", q:"למה הצמח צריך מינרלים מהאדמה גם אם הוא מייצר סוכר?", a:"כי מינרלים נחוצים לבניית חומרים ותהליכים: N לבניית חלבונים, P לבניית DNA, ועוד (K/ברזל/מגנזיום) לתהליכים."},
+    {id:"B15", topic:"B", type:"mcq", q:"איזה מינרל הוא חלק מהכלורופיל לפי החומר?", choices:["ברזל","מגנזיום","אשלגן","זרחן"], correct:1, explain:"מגנזיום הוא חלק מהכלורופיל."},
+    {id:"B16", topic:"B", type:"mcq", q:"איזה מינרל קשור לבניית DNA לפי החומר?", choices:["זרחן (P)","חנקן (N)","אשלגן (K)","מים"], correct:0, explain:"זרחן (P) לבניית DNA."},
+    {id:"B17", topic:"B", type:"mcq", q:"איזה מינרל קשור לבניית חלבונים לפי החומר?", choices:["חנקן (N)","זרחן (P)","חמצן (O₂)","גלוקוז"], correct:0, explain:"חנקן (N) לבניית חלבונים."},
+
+    // C - Cellular respiration
+    {id:"C1", topic:"C", type:"open", q:"מה ההבדל בין נשימה תאית לנשימה ריאתית?", a:"נשימה תאית היא תהליך כימי בתוך כל תא חי להפקת אנרגיה; נשימה ריאתית היא שאיפה/נשיפה של אוויר."},
+    {id:"C2", topic:"C", type:"open", q:"כתבי את הנוסחה/העיקרון של נשימה תאית: מה נכנס ומה יוצא?", a:"נכנס: גלוקוז + חמצן. יוצא: CO₂ + מים + אנרגיה כימית (ATP) + חום."},
+    {id:"C3", topic:"C", type:"mcq", q:"איזה חומר הוא תוצר אנרגטי עיקרי בנשימה תאית לפי החומר?", choices:["כלורופיל","ATP","יוד","עמילן"], correct:1, explain:"נשימה תאית מפיקה אנרגיה כימית בצורת ATP."},
+    {id:"C4", topic:"C", type:"mcq", q:"מה נכון לגבי צמחים ופוטוסינתזה/נשימה תאית?", choices:["צמחים עושים נשימה תאית רק באור","צמחים עושים פוטוסינתזה גם בלילה","צמחים עושים פוטוסינתזה רק באור ונשימה תאית כל הזמן","צמחים לא עושים נשימה תאית"], correct:2, explain:"פוטוסינתזה רק באור; נשימה תאית יום ולילה."},
+    {id:"C5", topic:"C", type:"open", q:"בלילה – מה צמחים קולטים ומה פולטים לפי החומר?", a:"בלילה צמחים קולטים חמצן ופולטים פחמן דו-חמצני, כמו בני אדם."},
+    {id:"C6", topic:"C", type:"mcq", q:"מה הקשר בין פוטוסינתזה לנשימה תאית לפי החומר?", choices:["הן אותו תהליך בדיוק","נשימה תאית היא ההפך מפוטוסינתזה","פוטוסינתזה מפרקת סוכר ונשימה תאית בונה סוכר","אין קשר ביניהן"], correct:1, explain:"נשימה תאית היא ההפך מפוטוסינתזה (מבחינת נכנס/יוצא ואנרגיה)."},
+    {id:"C7", topic:"C", type:"open", q:"מה המטרה של נשימה תאית?", a:"להפיק אנרגיה לפעולות החיים."},
+
+    // Cheat Sheet / mixed
+    {id:"CS1", topic:"CS", type:"mcq", q:"איזה התאמה נכונה של חומר ↔ אינדיקטור?", choices:["עמילן ↔ בנדיקט","גלוקוז ↔ ביורט","חלבון ↔ ביורט","שומן ↔ יוד"], correct:2, explain:"חלבון מזוהה עם ביורט (סגול)."},
+    {id:"CS2", topic:"CS", type:"open", q:"מה ארבעת ה“מגבילים” של פוטוסינתזה שצריך לזכור?", a:"אור, מים, CO₂, טמפרטורה."},
+    {id:"CS3", topic:"CS", type:"open", q:"אם כתוב בשאלה: “אנזים הפסיק לעבוד בחום גבוה” – מה מילת המפתח בתשובה?", a:"דנטורציה (שינוי/הרס המבנה המרחבי של החלבון)."},
+    {id:"CS4", topic:"CS", type:"mcq", q:"פוטוסינתזה מול נשימה תאית – מה נכון?", choices:["פוטוסינתזה מפרקת סוכר ומשחררת אנרגיה","נשימה תאית בונה סוכר וצורכת אור","פוטוסינתזה בונה סוכר וצורכת אור; נשימה תאית מפרקת סוכר ומשחררת אנרגיה","שתיהן קורות רק בצמחים"], correct:2, explain:"זו ההבחנה הגדולה לפי ה-Cheat Sheet."},
+    {id:"CS5", topic:"CS", type:"open", q:"מה יקרה בגרף של קצב פוטוסינתזה כשמגדילים גורם מגביל (כמו אור או CO₂)?", a:"הקצב יעלה עד גבול מסוים ואז יתייצב (הגרף ‘עולה ואז נתקע’)."}
+  ];
+
+  // ---------- State ----------
+  const LS_KEY = "bioStudy_progress_v1";
+  const progress = loadProgress(); // { [id]: "known" | "unknown" }
+  let currentSet = [];
+
+  // ---------- UI Elements ----------
+  const tabLearn = document.getElementById("tabLearn");
+  const tabQuiz  = document.getElementById("tabQuiz");
+  const viewLearn = document.getElementById("viewLearn");
+  const viewQuiz  = document.getElementById("viewQuiz");
+
+  const topicFilter = document.getElementById("topicFilter");
+  const modeFilter  = document.getElementById("modeFilter");
+  const searchBox   = document.getElementById("searchBox");
+
+  const newSetBtn = document.getElementById("newSetBtn");
+  const shuffleBtn = document.getElementById("shuffleBtn");
+  const questionsDiv = document.getElementById("questions");
+
+  const progressPill = document.getElementById("progressPill");
+  const setInfo = document.getElementById("setInfo");
+  const knownCount = document.getElementById("knownCount");
+  const unknownCount = document.getElementById("unknownCount");
+
+  const resetProgress = document.getElementById("resetProgress");
+  const resetProgress2 = document.getElementById("resetProgress2");
+
+  // ---------- Tab switching ----------
+  tabLearn.addEventListener("click", () => {
+    tabLearn.classList.add("active"); tabQuiz.classList.remove("active");
+    viewLearn.style.display = ""; viewQuiz.style.display = "none";
+  });
+  tabQuiz.addEventListener("click", () => {
+    tabQuiz.classList.add("active"); tabLearn.classList.remove("active");
+    viewQuiz.style.display = ""; viewLearn.style.display = "none";
+    // create a default set if none exists
+    if(currentSet.length === 0) makeNewSet();
+  });
+
+  // ---------- Controls ----------
+  newSetBtn.addEventListener("click", makeNewSet);
+  shuffleBtn.addEventListener("click", () => {
+    if(currentSet.length === 0) return makeNewSet();
+    currentSet = shuffle([...currentSet]);
+    renderSet();
+  });
+
+  topicFilter.addEventListener("change", makeNewSet);
+  modeFilter.addEventListener("change", makeNewSet);
+  searchBox.addEventListener("input", () => {
+    // only filters the currently shown set, not the bank.
+    renderSet();
+  });
+
+  resetProgress.addEventListener("click", () => {
+    if(confirm("לאפס את כל הסימונים (ידעתי/לא ידעתי) בתרגול?")) {
+      Object.keys(progress).forEach(k => delete progress[k]);
+      saveProgress(progress);
+      renderSet();
+      updateStats();
+    }
+  });
+  resetProgress2.addEventListener("click", () => resetProgress.click());
+
+  // ---------- Core ----------
+  function makeNewSet(){
+    const topic = topicFilter.value; // all/A/B/C/CS
+    const mode  = modeFilter.value;  // mix/open/mcq
+
+    let pool = QUESTION_BANK.filter(q => topic === "all" ? true : q.topic === topic);
+    pool = pool.filter(q => mode === "mix" ? true : q.type === mode);
+
+    // If pool < 10, we just show as many as available
+    const setSize = Math.min(10, pool.length);
+
+    // Prefer questions that are "unknown" or not answered yet (light personalization)
+    const scored = pool.map(q => {
+      const p = progress[q.id];
+      let score = 0;
+      if(!p) score += 2;              // unseen
+      if(p === "unknown") score += 3; // needs work
+      score += Math.random();         // small randomness
+      return {q, score};
+    }).sort((a,b)=> b.score - a.score);
+
+    currentSet = scored.slice(0, setSize).map(x => x.q);
+    currentSet = shuffle(currentSet);
+
+    setInfo.textContent = `סט: ${topicLabel(topic)} • ${modeLabel(mode)} • ${currentSet.length} שאלות`;
+    renderSet();
+  }
+
+  function renderSet(){
+    questionsDiv.innerHTML = "";
+
+    const term = (searchBox.value || "").trim().toLowerCase();
+    const shown = currentSet.filter(item => {
+      if(!term) return true;
+      return (item.q + " " + (item.a||"") + " " + (item.explain||""))
+        .toLowerCase().includes(term);
+    });
+
+    shown.forEach((item, idx) => {
+      const el = document.createElement("div");
+      el.className = "qcard";
+
+      const top = document.createElement("div");
+      top.className = "qtop";
+
+      const h = document.createElement("h3");
+      h.className = "qtitle";
+      h.textContent = `שאלה ${idx+1}: ${item.q}`;
+
+      const tag = document.createElement("span");
+      tag.className = "tag";
+      tag.textContent = `${topicLabel(item.topic)} • ${item.type === "mcq" ? "אמריקאית" : "פתוחה"}`;
+
+      top.appendChild(h);
+      top.appendChild(tag);
+      el.appendChild(top);
+
+      // Status pills
+      const st = progress[item.id];
+      const statusRow = document.createElement("div");
+      statusRow.className = "row";
+      statusRow.style.marginTop = "10px";
+
+      const stPill = document.createElement("span");
+      stPill.className = "pill " + (st === "known" ? "ok" : st === "unknown" ? "no" : "warn");
+      stPill.textContent = st === "known" ? "סומן: ידעתי" : st === "unknown" ? "סומן: לא ידעתי" : "עדיין לא סומן";
+      statusRow.appendChild(stPill);
+
+      el.appendChild(statusRow);
+
+      let ans = document.createElement("div");
+      ans.className = "answer";
+      ans.style.display = "none";
+
+      if(item.type === "mcq"){
+        const choices = document.createElement("div");
+        choices.className = "choices";
+
+        item.choices.forEach((c, i) => {
+          const ch = document.createElement("div");
+          ch.className = "choice";
+          ch.textContent = c;
+          ch.addEventListener("click", () => {
+            const all = choices.querySelectorAll(".choice");
+            all.forEach((node, j) => {
+              node.classList.remove("correct","wrong");
+              if(j === item.correct) node.classList.add("correct");
+            });
+            if(i !== item.correct) ch.classList.add("wrong");
+            ans.style.display = "";
+          });
+          choices.appendChild(ch);
+        });
+
+        el.appendChild(choices);
+      } else {
+        const showBtn = document.createElement("button");
+        showBtn.className = "btn small";
+        showBtn.textContent = "הצג תשובה";
+        showBtn.addEventListener("click", () => {
+          ans.style.display = (ans.style.display === "none" ? "" : "none");
+          showBtn.textContent = (ans.style.display === "none" ? "הצג תשובה" : "הסתר תשובה");
+        });
+        el.appendChild(showBtn);
+      }
+
+      const aText = document.createElement("div");
+      aText.innerHTML = item.type === "mcq"
+        ? `<strong>תשובה נכונה:</strong> ${item.choices[item.correct]}<br/><span class="muted">${item.explain || ""}</span>`
+        : `<strong>תשובה:</strong> ${item.a}`;
+
+      ans.appendChild(aText);
+
+      const markRow = document.createElement("div");
+      markRow.className = "row";
+      markRow.style.marginTop = "12px";
+
+      const btnKnown = document.createElement("button");
+      btnKnown.className = "btn small ok";
+      btnKnown.textContent = "ידעתי ✅";
+      btnKnown.addEventListener("click", () => {
+        progress[item.id] = "known";
+        saveProgress(progress);
+        renderSet();
+        updateStats();
+      });
+
+      const btnUnknown = document.createElement("button");
+      btnUnknown.className = "btn small no";
+      btnUnknown.textContent = "לא ידעתי ❌";
+      btnUnknown.addEventListener("click", () => {
+        progress[item.id] = "unknown";
+        saveProgress(progress);
+        renderSet();
+        updateStats();
+      });
+
+      const btnClear = document.createElement("button");
+      btnClear.className = "btn small";
+      btnClear.textContent = "נקה סימון";
+      btnClear.addEventListener("click", () => {
+        delete progress[item.id];
+        saveProgress(progress);
+        renderSet();
+        updateStats();
+      });
+
+      markRow.appendChild(btnKnown);
+      markRow.appendChild(btnUnknown);
+      markRow.appendChild(btnClear);
+
+      ans.appendChild(markRow);
+
+      el.appendChild(ans);
+      questionsDiv.appendChild(el);
+    });
+
+    updateStats();
+    updateProgressPill();
+  }
+
+  function updateStats(){
+    const ids = QUESTION_BANK.map(q => q.id);
+    let known = 0, unknown = 0, marked = 0;
+    ids.forEach(id => {
+      if(progress[id] === "known"){ known++; marked++; }
+      else if(progress[id] === "unknown"){ unknown++; marked++; }
+    });
+    knownCount.textContent = `ידעתי: ${known}`;
+    unknownCount.textContent = `לא ידעתי: ${unknown}`;
+  }
+
+  function updateProgressPill(){
+    const total = QUESTION_BANK.length;
+    let marked = 0;
+    for(const q of QUESTION_BANK){
+      if(progress[q.id]) marked++;
+    }
+    progressPill.textContent = `התקדמות: ${marked}/${total}`;
+  }
+
+  // ---------- Helpers ----------
+  function saveProgress(obj){
+    localStorage.setItem(LS_KEY, JSON.stringify(obj));
+  }
+  function loadProgress(){
+    try{
+      const raw = localStorage.getItem(LS_KEY);
+      return raw ? JSON.parse(raw) : {};
+    }catch(e){ return {}; }
+  }
+  function shuffle(arr){
+    for(let i=arr.length-1;i>0;i--){
+      const j = Math.floor(Math.random()*(i+1));
+      [arr[i],arr[j]] = [arr[j],arr[i]];
+    }
+    return arr;
+  }
+  function topicLabel(t){
+    if(t==="A") return "פוטוסינתזה";
+    if(t==="B") return "אבות המזון";
+    if(t==="C") return "נשימה תאית";
+    if(t==="CS") return "Cheat Sheet";
+    return "הכל";
+  }
+  function modeLabel(m){
+    if(m==="mix") return "מעורב";
+    if(m==="open") return "פתוחות";
+    if(m==="mcq") return "אמריקאיות";
+    return m;
+  }
+
+  // init
+  updateStats();
+  updateProgressPill();
+</script>
+</body>
+</html>
